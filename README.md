@@ -26,3 +26,6 @@ Github Repo: https://github.com/Alanilla/flutter_funbuild/
 - flutter_card_swiper
 - CATAAS API
 - Github Deployment
+
+## Author
+Azlan Samad aka Alanilla
