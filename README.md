@@ -1,16 +1,31 @@
-# cat_picker
+# Cat Picker
+Cat Picker is a Tinder-style Flutter Web app that lets users "like" or "pass" on random cat photos fetched from CATAAS - Cat As A Service
+The API can be accessed through here: https://cataas.com/
 
-A new Flutter project.
+Users can choose how many cats to view, swipe through each image, and see a summary once they're done.
 
-## Getting Started
+This project was built as a part of a recruitment process for a company.
 
-This project is a starting point for a Flutter application.
+## Features
+- Choose how many cats to display
+- Swipe left/right to dislike/like cats
+- See "Like" / "Nope" labels while swiping
+- View a summary after all cats are swiped
+- Option to refresh, or restart, or change the number of cats to display
+- A design to be responsive for web
 
-A few resources to get you started if this is your first Flutter project:
+## Live Demo
+https://Alanilla.github.io/flutter_funbuild/
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Repository
+Github Repo: https://github.com/Alanilla/flutter_funbuild/
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## This project is build with
+- Flutter
+- Dart
+- flutter_card_swiper
+- CATAAS API
+- Github Deployment
+
+## Author
+Azlan Samad aka Alanilla
