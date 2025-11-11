@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../services/cataas_api.dart';
 
 class CataasApi {
   static Future<List<String>> fetchCatImages({int count = 12}) async {
@@ -20,7 +21,7 @@ class CataasApi {
     if (validIds.isEmpty) {
       return List.generate(count, (i) {
         final cacheBuster = DateTime.now().millisecondsSinceEpoch + i;
-        return 'https://cataas.com/cat?width=800&height=1000&random=$cacheBuster';
+        return 'https://cataas.com/cat?width=400&height=500&random=$cacheBuster';
       });
     }
 

@@ -27,12 +27,30 @@ class _TinderSwipeScreenState extends State<TinderSwipeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadCats();
+    // _loadCats();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _askForCountAndLoad();
+    });
+  }
+
+   Future<void> _askForCountAndLoad() async {
+    final result = await _showCountDialog(initial: catCount);
+    if (result == null) return; // user cancelled; stay idle
+    setState(() {
+      catCount = result;
+      loading = true;
+      error = null;
+      finished = false;
+      liked.clear();
+      passed.clear();
+      catImages.clear();
+    });
+    await _loadCats();
   }
 
   Future<void> _loadCats() async {
     try {
-      final imgs = await CataasApi.fetchCatImages(count: 12);
+      final imgs = await CataasApi.fetchCatImages(count: catCount);
       setState(() {
         catImages = imgs;
         loading = false;
@@ -112,6 +130,39 @@ class _TinderSwipeScreenState extends State<TinderSwipeScreen> {
     );
   }
 
+   Future<int?> _showCountDialog({required int initial}) async {
+    final txt = TextEditingController(text: initial.toString());
+    return showDialog<int>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('How many cats?'),
+        content: TextField(
+          controller: txt,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            labelText: 'Enter a number (1–200)',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              final val = int.tryParse(txt.text.trim());
+              if (val != null && val > 0 && val <= 200) {
+                Navigator.pop(ctx, val);
+              }
+            },
+            child: const Text('Start'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final footer = Padding(
@@ -126,6 +177,11 @@ class _TinderSwipeScreenState extends State<TinderSwipeScreen> {
       appBar: AppBar(
         title: const Text('Cat Picker'),
         actions: [
+          IconButton(
+            tooltip: 'Set number of cats',
+            icon: const Icon(Icons.settings),
+            onPressed: _askForCountAndLoad,
+          ),
           IconButton(
             tooltip: 'Refresh cats',
             icon: const Icon(Icons.refresh),
@@ -186,6 +242,9 @@ class _TinderSwipeScreenState extends State<TinderSwipeScreen> {
                       controller: controller,
                       cardsCount: catImages.length,
                       isLoop: false, // stop looping
+                      numberOfCardsDisplayed: 2,
+                      scale: 0.9,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       cardBuilder: (context, index, x, y) {
                         final imageUrl = catImages[index];
                         final swipeProgress = x.toDouble();
@@ -267,12 +326,12 @@ class _TinderSwipeScreenState extends State<TinderSwipeScreen> {
                             horizontal: true,
                             vertical: true,
                           ),
-                      numberOfCardsDisplayed: 3,
-                      scale: 0.9,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
+                      // numberOfCardsDisplayed: 3,
+                      // scale: 0.9,
+                      // padding: const EdgeInsets.symmetric(
+                      //   horizontal: 16,
+                      //   vertical: 8,
+                      // ),
                     ),
                   ),
                   const SizedBox(height: 20),
